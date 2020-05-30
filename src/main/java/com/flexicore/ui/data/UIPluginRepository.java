@@ -5,6 +5,7 @@ import com.flexicore.interfaces.AbstractRepositoryPlugin;
 import com.flexicore.model.QueryInformationHolder;
 import com.flexicore.security.SecurityContext;
 import com.flexicore.ui.model.UIPlugin;
+import com.flexicore.ui.model.UIPlugin_;
 import com.flexicore.ui.request.UIPluginFilter;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -28,8 +29,10 @@ public class UIPluginRepository extends AbstractRepositoryPlugin {
         return getAllFiltered(queryInformationHolder,preds,cb,q,r);
     }
 
-    private void addUIPluginPredicates(List<Predicate> preds, CriteriaBuilder cb, Root<UIPlugin> r, UIPluginFilter UIPluginFilter) {
-
+    private void addUIPluginPredicates(List<Predicate> preds, CriteriaBuilder cb, Root<UIPlugin> r, UIPluginFilter uiPluginFilter) {
+        if(uiPluginFilter.getAssociationReferences()!=null &&!uiPluginFilter.getAssociationReferences().isEmpty()){
+            preds.add(r.get(UIPlugin_.associationReference).in(uiPluginFilter.getAssociationReferences()));
+        }
     }
 
     public long countAllUIPlugins(UIPluginFilter uiPluginFilter, SecurityContext securityContext) {
