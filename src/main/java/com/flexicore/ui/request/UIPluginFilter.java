@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class UIPluginFilter extends FilteringInformationHolder {
 
-    private Set<String> associationReferences;
+        private Set<String> associationReferences;
 
     public Set<String> getAssociationReferences() {
         return associationReferences;
