@@ -14,34 +14,44 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import org.pf4j.Extension;
+import org.springframework.stereotype.Component;
 
 @PluginInfo(version = 1)
+@Extension
+@Component
 public class UIPluginRepository extends AbstractRepositoryPlugin {
 
+	public List<UIPlugin> listAllUIPlugins(UIPluginFilter uiPluginFilter,
+			SecurityContext securityContext) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<UIPlugin> q = cb.createQuery(UIPlugin.class);
+		Root<UIPlugin> r = q.from(UIPlugin.class);
+		List<Predicate> preds = new ArrayList<>();
+		addUIPluginPredicates(preds, cb, r, uiPluginFilter);
+		QueryInformationHolder<UIPlugin> queryInformationHolder = new QueryInformationHolder<>(
+				uiPluginFilter, UIPlugin.class, securityContext);
+		return getAllFiltered(queryInformationHolder, preds, cb, q, r);
+	}
 
-    public List<UIPlugin> listAllUIPlugins(UIPluginFilter uiPluginFilter, SecurityContext securityContext) {
-        CriteriaBuilder cb=em.getCriteriaBuilder();
-        CriteriaQuery<UIPlugin> q=cb.createQuery(UIPlugin.class);
-        Root<UIPlugin> r=q.from(UIPlugin.class);
-        List<Predicate> preds=new ArrayList<>();
-        addUIPluginPredicates(preds,cb,r,uiPluginFilter);
-        QueryInformationHolder<UIPlugin> queryInformationHolder=new QueryInformationHolder<>(uiPluginFilter,UIPlugin.class,securityContext);
-        return getAllFiltered(queryInformationHolder,preds,cb,q,r);
-    }
+	private void addUIPluginPredicates(List<Predicate> preds,
+			CriteriaBuilder cb, Root<UIPlugin> r, UIPluginFilter uiPluginFilter) {
+		if (uiPluginFilter.getAssociationReferences() != null
+				&& !uiPluginFilter.getAssociationReferences().isEmpty()) {
+			preds.add(r.get(UIPlugin_.associationReference).in(
+					uiPluginFilter.getAssociationReferences()));
+		}
+	}
 
-    private void addUIPluginPredicates(List<Predicate> preds, CriteriaBuilder cb, Root<UIPlugin> r, UIPluginFilter uiPluginFilter) {
-        if(uiPluginFilter.getAssociationReferences()!=null &&!uiPluginFilter.getAssociationReferences().isEmpty()){
-            preds.add(r.get(UIPlugin_.associationReference).in(uiPluginFilter.getAssociationReferences()));
-        }
-    }
-
-    public long countAllUIPlugins(UIPluginFilter uiPluginFilter, SecurityContext securityContext) {
-        CriteriaBuilder cb=em.getCriteriaBuilder();
-        CriteriaQuery<Long> q=cb.createQuery(Long.class);
-        Root<UIPlugin> r=q.from(UIPlugin.class);
-        List<Predicate> preds=new ArrayList<>();
-        addUIPluginPredicates(preds,cb,r,uiPluginFilter);
-        QueryInformationHolder<UIPlugin> queryInformationHolder=new QueryInformationHolder<>(uiPluginFilter,UIPlugin.class,securityContext);
-        return countAllFiltered(queryInformationHolder,preds,cb,q,r);
-    }
+	public long countAllUIPlugins(UIPluginFilter uiPluginFilter,
+			SecurityContext securityContext) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Long> q = cb.createQuery(Long.class);
+		Root<UIPlugin> r = q.from(UIPlugin.class);
+		List<Predicate> preds = new ArrayList<>();
+		addUIPluginPredicates(preds, cb, r, uiPluginFilter);
+		QueryInformationHolder<UIPlugin> queryInformationHolder = new QueryInformationHolder<>(
+				uiPluginFilter, UIPlugin.class, securityContext);
+		return countAllFiltered(queryInformationHolder, preds, cb, q, r);
+	}
 }
