@@ -17,7 +17,7 @@
         </license>
     </licenses>
     <properties>
-        <flexicore-api.version>4.0.10</flexicore-api.version>
+        <flexicore-api.version>4.2.2</flexicore-api.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <version.compiler.plugin>3.3</version.compiler.plugin>
         <version.jackson>2.11.0</version.jackson>
@@ -119,20 +119,6 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-    <repositories>
-        <repository>
-            <id>flexicore-local</id>
-            <name>flexicore-local</name>
-            <url>https://artifactory.wizzdi.com/artifactory/flexicore-local</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>flexicore-local</id>
-            <name>flexicore-local</name>
-            <url>https://artifactory.wizzdi.com/artifactory/flexicore-local</url>
-        </pluginRepository>
-    </pluginRepositories>
     <build>
         <resources>
             <resource>
